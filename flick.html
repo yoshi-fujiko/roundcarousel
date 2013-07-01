@@ -1,0 +1,115 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<style>
+html, body, ul, li {
+padding: 0;
+margin: 0;
+position: relative;
+}
+
+body {
+background: black;
+}
+
+#wrapper {
+	width: 320px;
+	height: 200px;
+	background: #fff;
+	margin: auto;
+}
+
+input {
+	width: 50px
+}
+form {
+	color: #fff;
+}
+#dir {
+	color: #fff;
+}
+</style>
+
+</head>
+<body>
+
+<div id="wrapper">
+
+</div>
+
+<div id="dir"></div>
+
+<form id="test">
+touch start<br>
+x:<input type="text" id="startX" name="startX">
+y:<input type="text" id="startY" name="startY"><br>
+move<br>
+x:<input type="text" id="moveX" name="moveX">
+y:<input type="text" id="moveY" name="moveY"><br>
+diff<br>
+x:<input type="text" id="diffX" name="diffX">
+y:<input type="text" id="diffY" name="diffY">
+</form>
+
+<script>
+var touchHandle = function(e) {
+	document.getElementById("dir").innerHTML = "";
+	document.getElementById("dir").innerHTML = "";
+	var touch = e.touches[0];
+	var moveFlag = false;
+	switch(e.type) {
+		case "touchstart":
+			startX = touch.pageX;
+			startY = touch.pageY;
+			diffX = 0;
+			diffY = 0;
+			break;
+		case "touchmove":
+			moveFlag = true;
+			moveX = touch.pageX;
+			moveY = touch.pageY;
+			diffX = moveX - startX;
+			diffY = moveY - startY;
+			if (Math.abs(diffY) > 100) {
+
+			}
+			else {
+				if (diffX > 100) {
+					document.getElementById("dir").innerHTML = "move right";
+					e.preventDefault();
+				}
+				if (diffX < -100) {
+					document.getElementById("dir").innerHTML = "move left";
+					e.preventDefault();
+				}
+			}
+			break;
+		case "touchend":
+			moveFlag = false;
+			break;
+	}
+	document.forms[0].elements["startX"].value = startX;
+	document.forms[0].elements["startY"].value = startY;
+	document.forms[0].elements["moveX"].value = moveX;
+	document.forms[0].elements["moveY"].value = moveY;
+	document.forms[0].elements["diffX"].value = diffX;
+	document.forms[0].elements["diffY"].value = diffY;
+}
+
+var doc = document.getElementById("wrapper");
+doc.addEventListener("touchstart", function(e) {
+	touchHandle(e);
+}, false);
+doc.addEventListener("touchmove", function(e) {
+	touchHandle(e);
+}, false);
+doc.addEventListener("touchend", function(e) {
+	touchHandle(e);
+}, false);
+</script>
+
+</body>
+</html>

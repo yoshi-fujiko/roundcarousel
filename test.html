@@ -1,0 +1,90 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1,minimum-scale=1,width=device-width,user-scalable=no">
+<style type="text/css">
+html, body, ul, li {
+padding: 0;
+margin: 0;
+position: relative;
+}
+
+body {
+background: black;
+width: 100%;
+height: 100%;
+}
+ul {
+position:relative;
+}
+li {
+list-style: none;
+position: absolute;
+}
+#move_right, #move_left {
+  cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+
+<div style="width:320px;height:320px;background:#fff;">
+<ul>
+<li><div style="width:20px;height:20px;background:#f00;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+<li><div style="width:20px;height:20px;background:#000;"></li>
+</ul>
+<div id="move_left">←</div>
+<div id="move_right">→</div>
+</div>
+
+<script>
+var radius = 100;
+var photoDegree = [];
+var itemW = 20;
+var lists = document.getElementsByTagName("li");
+var mR = document.getElementById("move_right");
+var mL = document.getElementById("move_left");
+var deg, x, y, z;
+
+// 角度算出
+for(var i=0; i<lists.length; i++ ){
+  photoDegree.push(i*360/lists.length + 90);
+}
+deg = 360 / lists.length;
+
+// 位置、重なり、縮尺設定
+function roundSet(dir) {
+  for (var i=0; i<lists.length; i++) {
+    if (dir) {
+      mvDeg = dir * deg;
+      photoDegree[i] += mvDeg;
+    }
+    x = Math.cos(photoDegree[i]*Math.PI/180)*radius + 160;
+    y = Math.sin(photoDegree[i]*Math.PI/180)*radius + 160;
+    z = Math.floor(y);
+    scale = z / 260;
+    lists[i].style.webkitTransform = "translate(" + (x - itemW / 2) + "px, "+ (y / 2) + "px) scale(" + scale + ", " + scale + ")";
+  	lists[i].style.zIndex = z;
+  	if (dir) lists[i].style.webkitTransitionDuration = "0.5s";
+  }
+}
+
+roundSet();
+mR.addEventListener("click", function() {
+  roundSet(-1);
+}, false);
+mL.addEventListener("click", function() {
+  roundSet(1);
+}, false);
+</script>
+
+</body>
+</html>
